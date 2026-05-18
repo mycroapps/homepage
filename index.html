@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>마이크로앱스 — AI 자동화 스튜디오</title>
+  <meta name="description" content="회계·재무·가상자산·레거시 업무를 이해하는 1인 FDE형 AI 자동화 스튜디오. AI가 만든 것을 업무에 넣어도 사고 나지 않게 설계·검증·운영합니다." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <style>
+    /* ─── reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── tokens ─────────────────────────────────────────────── */
+    :root {
+      --bg:          #0b0b0b;
+      --bg-raised:   #111111;
+      --border:      #1e1e1e;
+      --text-1:      #efefea;
+      --text-2:      #888880;
+      --text-3:      #444440;
+      --accent:      #c8a96e;
+      --accent-dim:  rgba(200, 169, 110, 0.12);
+    }
+
+    /* ─── base ───────────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Pretendard Variable', Pretendard, -apple-system,
+                   BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── layout ─────────────────────────────────────────────── */
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    section {
+      padding: 96px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── type scale ─────────────────────────────────────────── */
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: 600;
+      letter-spacing: -.025em;
+      line-height: 1.15;
+    }
+
+    h2 {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 600;
+      letter-spacing: -.02em;
+      line-height: 1.3;
+      margin-bottom: 40px;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    p { color: var(--text-2); }
+
+    /* ─── nav ────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+
+    nav .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--text-1);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      font-size: 12px;
+      letter-spacing: .04em;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      padding: 7px 16px;
+      transition: background .18s, color .18s;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ─── hero ───────────────────────────────────────────────── */
+    .hero {
+      padding: 120px 0 104px;
+      border-top: none;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: var(--text-3);
+      margin-bottom: 48px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin-top: 36px;
+      font-size: 17px;
+      line-height: 1.85;
+      color: var(--text-2);
+      max-width: 560px;
+    }
+
+    /* ─── pain grid ──────────────────────────────────────────── */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .pain-grid li {
+      list-style: none;
+      padding: 22px 26px;
+      font-size: 14px;
+      color: var(--text-2);
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    .pain-grid li:nth-child(2n)       { border-right: none; }
+    .pain-grid li:nth-last-child(-n+2) { border-bottom: none; }
+
+    .pain-grid li::before {
+      content: '–';
+      margin-right: 10px;
+      color: var(--text-3);
+    }
+
+    .pullquote {
+      font-size: clamp(17px, 2.5vw, 22px);
+      font-weight: 500;
+      line-height: 1.65;
+      color: var(--text-1);
+      border-left: 2px solid var(--accent);
+      padding: 4px 0 4px 28px;
+      margin-top: 56px;
+    }
+
+    /* ─── credentials grid ────────────────────────────────────── */
+    .cred-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px 40px;
+      margin-top: 52px;
+    }
+
+    .cred-item .n {
+      display: block;
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: var(--text-3);
+      margin-bottom: 14px;
+    }
+
+    .cred-item h3 { color: var(--text-1); }
+
+    .cred-item p {
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    /* ─── focus areas ─────────────────────────────────────────── */
+    .focus-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 40px;
+      padding: 44px 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .focus-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .focus-num {
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: var(--text-3);
+      padding-top: 3px;
+    }
+
+    .focus-body h3 { color: var(--text-1); }
+    .focus-body p { font-size: 15px; margin-top: 8px; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      font-size: 11px;
+      letter-spacing: .04em;
+      color: var(--text-3);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+    }
+
+    /* ─── steps ──────────────────────────────────────────────── */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .step {
+      padding: 36px 32px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    .steps .step:nth-child(2n)          { border-right: none; }
+    .steps .step:nth-last-child(-n+2)   { border-bottom: none; }
+
+    .step-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .step h3 { color: var(--text-1); }
+    .step p  { font-size: 14px; margin-top: 8px; }
+
+    /* ─── contact ────────────────────────────────────────────── */
+    #contact {
+      padding: 120px 0;
+      text-align: center;
+    }
+
+    #contact h2 { margin-bottom: 16px; }
+
+    #contact > .wrap > p {
+      font-size: 16px;
+      margin-bottom: 52px;
+    }
+
+    .email-link {
+      display: inline-block;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--text-1);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 5px;
+      transition: color .18s;
+    }
+
+    .email-link:hover { color: var(--accent); }
+
+    /* ─── footer ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+    }
+
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    /* ─── responsive ─────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      section      { padding: 72px 0; }
+      .hero        { padding: 88px 0 72px; }
+
+      .pain-grid   { grid-template-columns: 1fr; }
+      .pain-grid li:nth-child(2n)        { border-right: 1px solid var(--border); }
+      .pain-grid li:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .pain-grid li:last-child           { border-bottom: none; }
+
+      .cred-grid   { grid-template-columns: 1fr 1fr; gap: 36px 28px; }
+
+      .focus-item  { grid-template-columns: 1fr; gap: 8px; }
+      .focus-num   { display: none; }
+
+      .steps       { grid-template-columns: 1fr; }
+      .step        { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+      .steps .step:last-child { border-bottom: none !important; }
+
+      footer .wrap { flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────────────── -->
+<nav>
+  <div class="wrap">
+    <a href="#" class="nav-logo">마이크로앱스</a>
+    <a href="#contact" class="nav-cta">문의하기</a>
+  </div>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-tag">1인 FDE형 AI 자동화 스튜디오</span>
+    <h1>AI가 만든 것을<br><em>업무에 넣어도<br>사고 나지 않게.</em></h1>
+    <p class="hero-sub">
+      회계·재무·가상자산·레거시 업무를 이해하는 개발자가
+      AI 자동화를 설계하고, 검증하고, 운영합니다.
+      초안을 만드는 것이 아니라, 현장에서 버티는 것을 만듭니다.
+    </p>
+  </div>
+</section>
+
+<!-- ─── Pain ──────────────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The Problem</div>
+    <h2>AI로 직접 해보다가<br>막히는 지점</h2>
+    <ul class="pain-grid">
+      <li>보안과 개인정보 처리</li>
+      <li>실제 업무 예외 처리</li>
+      <li>기존 DB·API 연동</li>
+      <li>결과 검증과 책임 소재</li>
+      <li>운영 중 장애 대응</li>
+      <li>감사·법적 기록 요건</li>
+    </ul>
+    <p class="pullquote">
+      고객도 AI로 초안을 만들 수 있다.<br>
+      마이크로앱스는 그 다음을 합니다.
+    </p>
+  </div>
+</section>
+
+<!-- ─── Credentials ───────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Why Us</div>
+    <h2>흔하지 않은 조합</h2>
+    <p>
+      개발자는 많고, 회계사는 많고, 가상자산 경험자도 있습니다.<br>
+      세 가지가 한 사람 안에 들어 있는 경우는 드뭅니다.
+    </p>
+    <div class="cred-grid">
+      <div class="cred-item">
+        <span class="n">01</span>
+        <h3>시스템 회계</h3>
+        <p>CPA Australia 정회원. 회계법인 운영시스템, 부가세 장부, 재무모델 구축 경험.</p>
+      </div>
+      <div class="cred-item">
+        <span class="n">02</span>
+        <h3>백엔드 개발</h3>
+        <p>Rails, PHP, .NET, Python, AWS, Kubernetes. 작은 SaaS부터 클라우드 운영까지.</p>
+      </div>
+      <div class="cred-item">
+        <span class="n">03</span>
+        <h3>가상자산 운영</h3>
+        <p>거래소 백엔드 개발·운영, MPC 지갑 프로토타입. 보안과 컴플라이언스 실무.</p>
+      </div>
+      <div class="cred-item">
+        <span class="n">04</span>
+        <h3>도메인 번역</h3>
+        <p>업무 언어를 시스템 언어로. 무엇을 자동화해야 하는지 아는 능력.</p>
+      </div>
+      <div class="cred-item">
+        <span class="n">05</span>
+        <h3>레거시 이해</h3>
+        <p>ASP, Delphi, VB, Oracle. 오래된 시스템에 AI 인터페이스를 얹는 방법을 압니다.</p>
+      </div>
+      <div class="cred-item">
+        <span class="n">06</span>
+        <h3>감사 가능 설계</h3>
+        <p>AI 판단 근거 기록, 사람 승인 흐름, 고객별 데이터 분리. 안전하게 운영되는 자동화.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Focus Areas ────────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Focus Areas</div>
+    <h2>집중하는 영역</h2>
+
+    <div class="focus-item">
+      <span class="focus-num">01 / 회계·세무</span>
+      <div class="focus-body">
+        <h3>중소기업·회계사무소 AI 운영 자동화</h3>
+        <p>
+          증빙 수집부터 분류, 누락 탐지, 월마감 검증까지.
+          더존·홈택스·엑셀 사이의 비정형 흐름을 AI가 정리합니다.
+          회계사를 대체하는 것이 아니라, 반복 업무를 줄이는 보조 도구입니다.
+        </p>
+        <div class="tags">
+          <span class="tag">자료 수집 자동화</span>
+          <span class="tag">증빙 누락 탐지</span>
+          <span class="tag">월마감 체크</span>
+          <span class="tag">내부 챗봇</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="focus-item">
+      <span class="focus-num">02 / 가상자산</span>
+      <div class="focus-body">
+        <h3>거래소·지갑·컴플라이언스 운영 보조</h3>
+        <p>
+          운영 로그 이상탐지, KYC 문서 자동화, AML 케이스 초안, 장애 보고서 생성.
+          핵심 트랜잭션이 아닌 감사·문서·운영 보조에서 시작합니다.
+        </p>
+        <div class="tags">
+          <span class="tag">이상징후 분석</span>
+          <span class="tag">컴플라이언스 문서</span>
+          <span class="tag">운영 자동화</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="focus-item">
+      <span class="focus-num">03 / 레거시</span>
+      <div class="focus-body">
+        <h3>오래된 시스템에 AI 인터페이스 얹기</h3>
+        <p>
+          전면 재구축 없이 기존 DB 위에 AI 검색, 내부 챗봇, 자동 문서화를 붙입니다.
+          젊은 개발자가 건드리기 싫어하는 스택을 이해합니다.
+        </p>
+        <div class="tags">
+          <span class="tag">DB 문서화</span>
+          <span class="tag">레거시 AI 래핑</span>
+          <span class="tag">내부 챗봇</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How We Work ────────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">How We Engage</div>
+    <h2>작게 시작해 검증하는 방식</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-label">Step 01 · 2주</span>
+        <h3>업무 자동화 진단</h3>
+        <p>반복 비용, 오류 책임, 보안 리스크, 데이터 병목이 어디에 있는지 먼저 봅니다.</p>
+      </div>
+      <div class="step">
+        <span class="step-label">Step 02 · 4주</span>
+        <h3>PoC 구축</h3>
+        <p>좁은 문제를 작동하는 프로토타입으로 만듭니다. 감사 로그와 승인 흐름부터.</p>
+      </div>
+      <div class="step">
+        <span class="step-label">Step 03 · 8주</span>
+        <h3>업무 적용</h3>
+        <p>실제 업무에 넣고, 예외를 기록하고, 운영 로그로 개선합니다.</p>
+      </div>
+      <div class="step">
+        <span class="step-label">Step 04 · 월</span>
+        <h3>운영·개선 구독</h3>
+        <p>작동하는 자동화를 계속 유지합니다. 프로젝트가 아니라 운영 관계입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Contact ────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h2>어디서 막혔는지<br>말씀해주세요</h2>
+    <p>
+      "AI로 해보려 했는데 막혔다"는 지점이<br>
+      마이크로앱스가 시작하는 곳입니다.
+    </p>
+    <a href="mailto:mycroapps@gmail.com" class="email-link">mycroapps@gmail.com</a>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────────── -->
+<footer>
+  <div class="wrap">
+    <p>마이크로앱스</p>
+    <p>© 2026 Microapps</p>
+  </div>
+</footer>
+
+</body>
+</html>
