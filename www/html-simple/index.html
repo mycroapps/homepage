@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MycroApps</title>
+<meta name="description" content="IT Development, Blockchain, and AI Consulting for businesses ready to lead.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── Tokens ─── */
+:root {
+  --bg:        #F0F4FF;
+  --bg-card:   #FFFFFF;
+  --fg:        #111827;
+  --fg-muted:  #4B5A7A;
+  --accent:    #1F6FEB;
+  --accent-lt: #E8F0FD;
+  --border:    rgba(31,111,235,.14);
+  --nav-bg:    rgba(240,244,255,.85);
+  --shadow:    0 2px 24px rgba(31,111,235,.09);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:       #0D1117;
+    --bg-card:  #161B27;
+    --fg:       #E8EDF5;
+    --fg-muted: #8896B3;
+    --accent:   #4D9EFF;
+    --accent-lt:#0D2545;
+    --border:   rgba(77,158,255,.14);
+    --nav-bg:   rgba(13,17,23,.85);
+    --shadow:   0 2px 32px rgba(0,0,0,.38);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:       #0D1117;
+  --bg-card:  #161B27;
+  --fg:       #E8EDF5;
+  --fg-muted: #8896B3;
+  --accent:   #4D9EFF;
+  --accent-lt:#0D2545;
+  --border:   rgba(77,158,255,.14);
+  --nav-bg:   rgba(13,17,23,.85);
+  --shadow:   0 2px 32px rgba(0,0,0,.38);
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.7;
+  font-size: 16px;
+  transition: background .3s, color .3s;
+}
+img { max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ─── Nav ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+  transition: background .3s;
+}
+.nav-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem;
+  letter-spacing: -.02em;
+  color: var(--fg);
+}
+.logo span { color: var(--accent); }
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: .875rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--fg-muted);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .35rem .55rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--fg-muted);
+  font: inherit;
+  font-size: .75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.language-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.language-toggle .active { color: var(--accent); }
+.language-toggle .divider { color: var(--border); }
+.btn-outline {
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  padding: .45rem 1.1rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  transition: background .2s, color .2s;
+}
+.btn-outline:hover { background: var(--accent); color: #fff; }
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color .2s;
+}
+.theme-toggle:hover { color: var(--accent); }
+
+/* ─── Hero ─── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 100px 2rem 4rem;
+}
+.hero-text { position: relative; z-index: 1; }
+.eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.6rem, 5vw, 3.75rem);
+  line-height: 1.12;
+  letter-spacing: -.03em;
+  text-wrap: balance;
+  margin-bottom: 1.5rem;
+}
+h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+.hero-desc {
+  font-size: 1.0625rem;
+  color: var(--fg-muted);
+  max-width: 440px;
+  margin-bottom: 2.5rem;
+  line-height: 1.75;
+}
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  font-size: .875rem;
+  font-weight: 600;
+  padding: .75rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s, transform .15s;
+}
+.btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+.btn-ghost {
+  font-size: .875rem;
+  font-weight: 500;
+  padding: .75rem 1.75rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.hero-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#hero-canvas {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* ─── Section shared ─── */
+section { scroll-margin-top: 80px; }
+.section-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+.section-label {
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  line-height: 1.18;
+  letter-spacing: -.03em;
+  text-wrap: balance;
+  margin-bottom: 1rem;
+}
+.section-lead {
+  font-size: 1.0625rem;
+  color: var(--fg-muted);
+  line-height: 1.75;
+  max-width: 560px;
+}
+
+/* ─── About ─── */
+#about { background: var(--bg); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-top: 3.5rem;
+}
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.stat-number {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.25rem;
+  letter-spacing: -.04em;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.stat-label {
+  font-size: .8125rem;
+  color: var(--fg-muted);
+  font-weight: 500;
+}
+.about-body p {
+  color: var(--fg-muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.about-body p:last-child { margin-bottom: 0; }
+.about-body strong { color: var(--fg); font-weight: 600; }
+
+/* ─── Services ─── */
+#services { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.services-header { margin-bottom: 3.5rem; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.service-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  transition: transform .22s, box-shadow .22s, border-color .22s;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity .22s;
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.service-card:hover::before { opacity: 1; }
+.service-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent-lt);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+}
+.service-icon svg { width: 24px; height: 24px; }
+.service-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem;
+  letter-spacing: -.02em;
+  margin-bottom: .75rem;
+}
+.service-card p {
+  font-size: .9375rem;
+  color: var(--fg-muted);
+  line-height: 1.72;
+  margin-bottom: 1.5rem;
+}
+.service-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+.tag {
+  font-size: .75rem;
+  font-weight: 500;
+  padding: .25rem .65rem;
+  background: var(--accent-lt);
+  color: var(--accent);
+  border-radius: 20px;
+  letter-spacing: .01em;
+}
+
+/* ─── Contact ─── */
+#contact { background: var(--bg); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 5rem;
+  align-items: start;
+  margin-top: 3.5rem;
+}
+.contact-info p {
+  color: var(--fg-muted);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.contact-items { display: flex; flex-direction: column; gap: 1rem; }
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  font-size: .9375rem;
+  color: var(--fg-muted);
+}
+.contact-item-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--accent-lt);
+  color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.contact-item-icon svg { width: 18px; height: 18px; }
+form { display: flex; flex-direction: column; gap: 1.25rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+label {
+  display: block;
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  margin-bottom: .4rem;
+  color: var(--fg);
+}
+input, textarea, select {
+  width: 100%;
+  padding: .75rem 1rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--fg);
+  font-family: 'Inter', sans-serif;
+  font-size: .9375rem;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+input:focus, textarea:focus, select {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(31,111,235,.12);
+}
+textarea { resize: vertical; min-height: 120px; }
+.form-submit { margin-top: .5rem; }
+.form-note { font-size: .8125rem; color: var(--fg-muted); margin-top: .75rem; }
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+}
+.footer-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy { font-size: .8125rem; color: var(--fg-muted); }
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a {
+  font-size: .8125rem;
+  color: var(--fg-muted);
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  #hero { grid-template-columns: 1fr; padding-top: 120px; }
+  .hero-canvas-wrap { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .form-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .nav-inner { padding: 0 1rem; }
+  .nav-right { gap: .55rem; }
+  .btn-outline { display: none; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}
+
+/* ─── Focus visible ─── */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Mycro<span>Apps</span></a>
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#services" data-i18n="nav.services">Services</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="language-toggle" id="languageToggle" type="button" aria-label="한국어로 전환">
+        <span data-lang-option="ko">한</span><span class="divider">/</span><span class="active" data-lang-option="en">EN</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="#contact" class="btn-outline" data-i18n="nav.cta">Get in Touch</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section id="hero-section">
+  <div id="hero">
+    <div class="hero-text">
+      <span class="eyebrow" data-i18n="hero.eyebrow">Technology & Consulting</span>
+      <h1 data-i18n="hero.title">Build what's <em>next</em> with confidence</h1>
+      <p class="hero-desc" data-i18n="hero.desc">From robust software systems to cutting-edge blockchain infrastructure and strategic AI integration — we help organizations turn complex technology into lasting competitive advantage.</p>
+      <div class="hero-ctas">
+        <a href="#services" class="btn-primary" data-i18n="hero.services">Explore Services</a>
+        <a href="#contact" class="btn-ghost" data-i18n="hero.contact">Start a Conversation</a>
+      </div>
+    </div>
+    <div class="hero-canvas-wrap">
+      <canvas id="hero-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ─── About ─── -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label" data-i18n="about.label">About Us</p>
+    <h2 data-i18n="about.title">A team built for the complexity of modern technology</h2>
+    <div class="about-grid">
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-number">120+</div>
+          <div class="stat-label" data-i18n="about.stat1">Projects Delivered</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">8+</div>
+          <div class="stat-label" data-i18n="about.stat2">Years of Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">40+</div>
+          <div class="stat-label" data-i18n="about.stat3">Global Clients</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">98%</div>
+          <div class="stat-label" data-i18n="about.stat4">Client Retention</div>
+        </div>
+      </div>
+      <div class="about-body">
+        <p data-i18n="about.p1">mycroapps is a technology firm specializing in custom software development, decentralized systems, and artificial intelligence strategy. We partner with forward-thinking businesses at every stage — from early-stage ventures defining their technical architecture to established enterprises modernizing legacy systems.</p>
+        <p data-i18n="about.p2">Our approach is <strong>pragmatic and outcome-driven</strong>. We invest time understanding your business context before writing a single line of code, ensuring the solutions we build are precisely calibrated to your goals, your constraints, and your users.</p>
+        <p data-i18n="about.p3">We believe the best technology is invisible — it works reliably, scales gracefully, and lets your team focus on what matters most.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Services ─── -->
+<section id="services">
+  <div class="section-inner">
+    <div class="services-header">
+      <p class="section-label" data-i18n="services.label">Services</p>
+      <h2 data-i18n="services.title">What we do best</h2>
+      <p class="section-lead" data-i18n="services.lead">Three focused practice areas. Each backed by deep expertise, proven methodologies, and an uncompromising standard for quality.</p>
+    </div>
+    <div class="services-grid">
+
+      <!-- IT Development -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3 data-i18n="service.it.title">IT Development</h3>
+        <p data-i18n="service.it.desc">We design and build scalable, maintainable software tailored to your workflows. From cloud-native backends and microservice architectures to polished web and mobile interfaces, every system is engineered for reliability and long-term growth.</p>
+        <div class="service-tags">
+          <span class="tag" data-i18n="service.it.tag1">Web & Mobile</span>
+          <span class="tag" data-i18n="service.it.tag2">Cloud Architecture</span>
+          <span class="tag" data-i18n="service.it.tag3">API Design</span>
+          <span class="tag">DevOps</span>
+        </div>
+      </div>
+
+      <!-- Blockchain -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="6" height="10" rx="1"/><rect x="9" y="3" width="6" height="18" rx="1"/><rect x="16" y="7" width="6" height="10" rx="1"/></svg>
+        </div>
+        <h3 data-i18n="service.blockchain.title">Blockchain Development</h3>
+        <p data-i18n="service.blockchain.desc">We build secure, auditable decentralized applications across leading blockchain ecosystems. Whether you need smart contract development, DeFi protocol design, tokenization infrastructure, or private enterprise chains, we deliver with security-first rigor.</p>
+        <div class="service-tags">
+          <span class="tag" data-i18n="service.blockchain.tag1">Smart Contracts</span>
+          <span class="tag" data-i18n="service.blockchain.tag2">DeFi & Web3</span>
+          <span class="tag" data-i18n="service.blockchain.tag3">NFT & Tokens</span>
+          <span class="tag" data-i18n="service.blockchain.tag4">Chain Audit</span>
+        </div>
+      </div>
+
+      <!-- AI Consulting -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V6a4 4 0 0 1 4-4z"/><circle cx="9" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <h3 data-i18n="service.ai.title">AI Consulting</h3>
+        <p data-i18n="service.ai.desc">We help organizations move from AI curiosity to AI capability. From opportunity mapping and model selection to production deployment and team enablement, our consulting practice translates the rapidly evolving AI landscape into measurable business outcomes.</p>
+        <div class="service-tags">
+          <span class="tag" data-i18n="service.ai.tag1">LLM Integration</span>
+          <span class="tag" data-i18n="service.ai.tag2">ML Engineering</span>
+          <span class="tag" data-i18n="service.ai.tag3">AI Strategy</span>
+          <span class="tag" data-i18n="service.ai.tag4">Data Pipeline</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Contact ─── -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label" data-i18n="contact.label">Contact Us</p>
+    <h2 data-i18n="contact.title">Let's build something together</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p data-i18n="contact.desc">Whether you have a well-defined project or an early-stage idea, we're ready to listen. Share what you're working on and we'll schedule a complimentary discovery session within two business days.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <span>mycroapps@gmail.com</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span data-i18n="contact.response">Response within 2 business days</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <span data-i18n="contact.location">Seoul, South Korea &nbsp;·&nbsp; Global Remote</span>
+          </div>
+        </div>
+      </div>
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div>
+            <label for="fname" data-i18n="form.first">First Name</label>
+            <input type="text" id="fname" placeholder="Jane" data-i18n-placeholder data-placeholder-en="Jane" data-placeholder-ko="길동" required>
+          </div>
+          <div>
+            <label for="lname" data-i18n="form.last">Last Name</label>
+            <input type="text" id="lname" placeholder="Smith" data-i18n-placeholder data-placeholder-en="Smith" data-placeholder-ko="홍" required>
+          </div>
+        </div>
+        <div>
+          <label for="email" data-i18n="form.email">Work Email</label>
+          <input type="email" id="email" placeholder="jane@company.com" required>
+        </div>
+        <div>
+          <label for="company" data-i18n="form.company">Company</label>
+          <input type="text" id="company" placeholder="Your organization" data-i18n-placeholder data-placeholder-en="Your organization" data-placeholder-ko="회사 또는 기관명">
+        </div>
+        <div>
+          <label for="service" data-i18n="form.service">Service of Interest</label>
+          <select id="service">
+            <option value="" data-i18n="form.select">Select a service...</option>
+            <option data-i18n="service.it.title">IT Development</option>
+            <option data-i18n="service.blockchain.title">Blockchain Development</option>
+            <option data-i18n="service.ai.title">AI Consulting</option>
+            <option data-i18n="form.multiple">Multiple / Not Sure</option>
+          </select>
+        </div>
+        <div>
+          <label for="message" data-i18n="form.message">Tell us about your project</label>
+          <textarea id="message" placeholder="Briefly describe your goals, timeline, and any specific challenges you're facing." data-i18n-placeholder data-placeholder-en="Briefly describe your goals, timeline, and any specific challenges you're facing." data-placeholder-ko="목표, 일정, 현재 겪고 있는 어려움을 간략히 알려주세요." required></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-primary" style="width:100%;font-size:.9375rem;padding:.9rem 1.75rem;" id="submitBtn" data-i18n="form.submit">Send Message</button>
+          <p class="form-note" data-i18n="form.note">Your information is kept strictly confidential and never shared with third parties.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy" data-i18n="footer.copy">© 2026 mycroapps. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#services" data-i18n="nav.services">Services</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── Language Toggle ─── */
+const translations = {
+  ko: {
+    'nav.about': '회사 소개', 'nav.services': '서비스', 'nav.contact': '문의하기', 'nav.cta': '상담 문의',
+    'hero.eyebrow': '기술 & 컨설팅', 'hero.title': 'Build what\'s <em>next</em> with confidence',
+    'hero.desc': '견고한 소프트웨어 시스템부터 최첨단 블록체인 인프라와 전략적 AI 도입까지 — 복잡한 기술을 지속 가능한 경쟁력으로 바꿔드립니다.',
+    'hero.services': '서비스 살펴보기', 'hero.contact': '상담 시작하기',
+    'about.label': '회사 소개', 'about.title': 'A team built for the complexity of modern technology',
+    'about.stat1': '완료 프로젝트', 'about.stat2': '업력', 'about.stat3': '글로벌 고객', 'about.stat4': '고객 유지율',
+    'about.p1': 'mycroapps는 맞춤형 소프트웨어 개발, 탈중앙화 시스템, 인공지능 전략을 전문으로 하는 기술 기업입니다. 기술 아키텍처를 설계하는 초기 스타트업부터 레거시 시스템을 현대화하는 기업까지, 모든 단계의 혁신적인 비즈니스와 함께합니다.',
+    'about.p2': '저희의 접근 방식은 <strong>실용적이며 결과 중심적</strong>입니다. 코드 한 줄을 작성하기 전부터 비즈니스 맥락을 깊이 이해하여 목표와 제약 조건, 사용자에게 꼭 맞는 솔루션을 구축합니다.',
+    'about.p3': '최고의 기술은 눈에 띄지 않는다고 믿습니다. 안정적으로 작동하고 유연하게 확장되며, 팀이 가장 중요한 일에 집중할 수 있게 해야 합니다.',
+    'services.label': '서비스', 'services.title': 'What we do best',
+    'services.lead': '세 가지 핵심 전문 영역. 깊이 있는 전문성, 검증된 방법론, 타협 없는 품질 기준을 바탕으로 합니다.',
+    'service.it.title': 'IT 개발', 'service.it.desc': '업무 방식에 맞춘 확장 가능하고 유지보수가 쉬운 소프트웨어를 설계하고 구축합니다. 클라우드 네이티브 백엔드와 마이크로서비스부터 완성도 높은 웹·모바일 인터페이스까지, 안정성과 장기적인 성장을 고려해 개발합니다.',
+    'service.it.tag1': '웹 & 모바일', 'service.it.tag2': '클라우드 아키텍처', 'service.it.tag3': 'API 설계',
+    'service.blockchain.title': '블록체인 개발', 'service.blockchain.desc': '주요 블록체인 생태계에서 안전하고 검증 가능한 탈중앙화 애플리케이션을 구축합니다. 스마트 계약, DeFi 프로토콜, 토큰화 인프라, 프라이빗 엔터프라이즈 체인까지 보안을 최우선으로 개발합니다.',
+    'service.blockchain.tag1': '스마트 계약', 'service.blockchain.tag2': 'DeFi & Web3', 'service.blockchain.tag3': 'NFT & 토큰', 'service.blockchain.tag4': '체인 감사',
+    'service.ai.title': 'AI 컨설팅', 'service.ai.desc': '기업이 AI에 대한 관심을 실질적인 역량으로 전환하도록 돕습니다. 기회 발굴과 모델 선정부터 프로덕션 배포, 팀 역량 강화까지 빠르게 변화하는 AI 환경을 측정 가능한 비즈니스 성과로 연결합니다.',
+    'service.ai.tag1': 'LLM 연동', 'service.ai.tag2': 'ML 엔지니어링', 'service.ai.tag3': 'AI 전략', 'service.ai.tag4': '데이터 파이프라인',
+    'contact.label': '문의하기', 'contact.title': 'Let\'s build something together',
+    'contact.desc': '구체적인 프로젝트든 초기 단계의 아이디어든 편하게 들려주세요. 내용을 확인한 후 영업일 기준 2일 이내에 무료 상담 일정을 안내해 드립니다.',
+    'contact.response': '영업일 기준 2일 이내 답변', 'contact.location': '대한민국 서울 · 전 세계 원격 협업',
+    'form.first': '이름', 'form.last': '성', 'form.email': '업무용 이메일', 'form.company': '회사명',
+    'form.service': '관심 서비스', 'form.select': '서비스를 선택하세요...', 'form.multiple': '복수 선택 / 아직 모름',
+    'form.message': '프로젝트에 대해 알려주세요', 'form.submit': '메시지 보내기',
+    'form.note': '입력하신 정보는 철저히 보호되며 제3자에게 공유되지 않습니다.',
+    'footer.copy': '© 2026 mycroapps. All rights reserved.',
+    'form.sent': '전송 완료 ✓'
+  }
+};
+
+const englishTexts = {};
+const languageToggle = document.getElementById('languageToggle');
+const translatableElements = document.querySelectorAll('[data-i18n]');
+translatableElements.forEach(el => { englishTexts[el.dataset.i18n] = el.innerHTML; });
+
+function applyLanguage(lang) {
+  const current = lang === 'ko' ? 'ko' : 'en';
+  translatableElements.forEach(el => {
+    const value = current === 'ko' ? translations.ko[el.dataset.i18n] : englishTexts[el.dataset.i18n];
+    if (value !== undefined) el.innerHTML = value;
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    el.placeholder = current === 'ko' ? el.dataset.placeholderKo : el.dataset.placeholderEn;
+  });
+  html.lang = current;
+  languageToggle.querySelectorAll('[data-lang-option]').forEach(el => el.classList.toggle('active', el.dataset.langOption === current));
+  languageToggle.setAttribute('aria-label', current === 'ko' ? 'Switch to English' : '한국어로 전환');
+  localStorage.setItem('language', current);
+}
+
+languageToggle.addEventListener('click', () => applyLanguage(html.lang === 'ko' ? 'en' : 'ko'));
+
+/* ─── Theme Toggle ─── */
+const html = document.documentElement;
+const toggle = document.getElementById('themeToggle');
+const iconSun = document.getElementById('iconSun');
+const iconMoon = document.getElementById('iconMoon');
+
+function getSystemDark() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+let isDark = getSystemDark();
+
+function applyTheme(dark) {
+  isDark = dark;
+  html.setAttribute('data-theme', dark ? 'dark' : 'light');
+  iconSun.style.display = dark ? 'block' : 'none';
+  iconMoon.style.display = dark ? 'none' : 'block';
+}
+
+applyTheme(isDark);
+
+applyLanguage(localStorage.getItem('language') || (navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en'));
+
+toggle.addEventListener('click', () => applyTheme(!isDark));
+
+/* ─── Hero Canvas – Node Network ─── */
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, nodes, animId;
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const size = Math.min(rect.width, 500);
+  canvas.width = size;
+  canvas.height = size;
+  W = size; H = size;
+  init();
+}
+
+function init() {
+  nodes = [];
+  const count = 28;
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - .5) * .45,
+      vy: (Math.random() - .5) * .45,
+      r: Math.random() * 3 + 2,
+    });
+  }
+}
+
+function getAccentColor() {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue('--accent').trim();
+}
+
+function hexToRgb(hex) {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0,2), 16);
+  const g = parseInt(h.slice(2,4), 16);
+  const b = parseInt(h.slice(4,6), 16);
+  return `${r},${g},${b}`;
+}
+
+function draw() {
+  const accent = getAccentColor();
+  const rgb = hexToRgb(accent);
+  const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-card').trim();
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, W, H);
+
+  // Edges
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 130) {
+        const alpha = (1 - dist / 130) * 0.35;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${rgb},${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Nodes
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${rgb},0.75)`;
+    ctx.fill();
+
+    // Update
+    n.x += n.vx;
+    n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+  });
+
+  animId = requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', () => {
+  cancelAnimationFrame(animId);
+  resize();
+  draw();
+});
+
+resize();
+draw();
+
+/* ─── Contact form ─── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = html.lang === 'ko' ? translations.ko['form.sent'] : 'Message Sent ✓';
+  btn.style.background = '#16a34a';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = html.lang === 'ko' ? translations.ko['form.submit'] : englishTexts['form.submit'];
+    btn.style.background = '';
+    btn.disabled = false;
+    document.getElementById('contactForm').reset();
+  }, 3500);
+}
+
+/* ─── Smooth reveal on scroll ─── */
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const cards = document.querySelectorAll('.service-card, .stat-card');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.style.opacity = '1';
+        el.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  cards.forEach(c => {
+    c.style.opacity = '0';
+    c.style.transform = 'translateY(18px)';
+    c.style.transition = 'opacity .5s ease, transform .5s ease, box-shadow .22s, border-color .22s';
+    obs.observe(c);
+  });
+}
+</script>
+</body>
+</html>
